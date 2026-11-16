@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>MediSync | Katpadi Community Clinic</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+    
+    <style>
+        :root {
+            /* Core Palette */
+            --bg: #F3F6F7; 
+            --surface: #FFFFFF; 
+            --surface2: #EAEFF1; 
+            --line: #D8DFE3;
+            --ink: #12222A; 
+            --ink2: #47585F; 
+            --ink3: #72838B;
+            --accent: #0A6C74; 
+            --accent-ink: #FFFFFF; 
+            --accent-soft: #DAEEEF;
+            --crit: #B8322A; 
+            --crit-soft: #FAE4E1; 
+            --warn: #9A5F06; 
+            --warn-soft: #FAEED5; 
+            --good: #256B43; 
+            --good-soft: #DFF0E6;
+            
+            --sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+            --mono: 'IBM Plex Mono', ui-monospace, monospace;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0D191E; --surface: #14242B; --surface2: #1B2F38; --line: #2A424C;
+                --ink: #E6EEF1; --ink2: #A7BAC2; --ink3: #7F959E;
+                --accent: #4FC1C8; --accent-ink: #06262A; --accent-soft: #143A3F;
+                --crit: #F28074; --crit-soft: #3B201D; --warn: #E5A646; --warn-soft: #392D14; --good: #6FCB95; --good-soft: #163325;
+            }
+        }
+
+        * { box-sizing: border-box; }
+        
+        body {
+            margin: 0; padding: 0;
+            background: var(--bg); color: var(--ink);
+            font: 14px/1.5 var(--sans);
+            padding-bottom: 48px;
+        }
+
+        .wrap {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        button, select, input { font: inherit; color: inherit; }
+        button { cursor: pointer; }
+        :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+        .mono, td.n, .kpi b { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+        /* Header */
+        .top {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 0; border-bottom: 1px solid var(--line);
+            margin-bottom: 24px;
+        }
+        .brand {
+            font-weight: 600; font-size: 20px; letter-spacing: -0.01em;
+            display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+        }
+        .brand small { font-weight: 400; font-size: 14px; color: var(--ink2); }
+        .clinic-tag {
+            font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+            color: var(--ink2); border: 1px solid var(--line); border-radius: 4px; padding: 2px 6px;
+        }
+
+        /* Buttons */
+        .btn {
+            background: var(--surface); border: 1px solid var(--line);
+            border-radius: 5px; padding: 6px 12px; color: var(--ink);
+            display: inline-flex; align-items: center; justify-content: center;
+            text-decoration: none; transition: all 0.2s;
+        }
+        .btn:hover { border-color: var(--ink3); }
+        .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 500; }
+        .btn.primary:hover { filter: brightness(1.1); }
+        .btn.sm { padding: 4px 10px; font-size: 12.5px; }
+
+        /* Alerts & Banners */
+        .ai-banner {
+            background: var(--crit-soft);
+            border: 1px solid var(--crit);
+            color: var(--crit);
+            border-radius: 8px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(184, 50, 42, 0.1);
+        }
+        .ai-banner i {
+            display: inline-block; width: 8px; height: 8px;
+            background: currentColor; border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(242, 128, 116, 0.7); }
+            70% { box-shadow: 0 0 0 6px rgba(242, 128, 116, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(242, 128, 116, 0); }
+        }
+
+        h2 { font-size: 16px; margin: 0 0 12px 0; font-weight: 600; }
+        
+        .kpis {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px; margin-bottom: 24px;
+        }
+        .kpi {
+            background: var(--surface); border: 1px solid var(--line);
+            border-radius: 8px; padding: 14px 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .kpi span { display: block; font-size: 12.5px; color: var(--ink2); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500;}
+        .kpi b { display: block; font-size: 28px; font-weight: 500; margin-top: 4px; letter-spacing: -0.02em; }
+        .kpi.crit b { color: var(--crit); }
+
+        .panel {
+            background: var(--surface); border: 1px solid var(--line);
+            border-radius: 8px; padding: 16px; overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .tbl { overflow-x: auto; margin: -16px; }
+        table { border-collapse: collapse; width: 100%; min-width: 700px; }
+        th {
+            font-size: 11.5px; font-weight: 500; color: var(--ink2); text-align: left;
+            letter-spacing: 0.04em; text-transform: uppercase; padding: 10px 16px;
+            border-bottom: 1px solid var(--line); background: var(--surface2);
+        }
+        td { padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+        tr:last-child td { border-bottom: 0; }
+        td.n, th.n { text-align: right; }
+        td small { display: block; color: var(--ink3); font-size: 12px; margin-top: 2px;}
+
+        /* Badges & Chips */
+        .chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 12px; font-weight: 500; padding: 2px 8px;
+            border-radius: 12px; white-space: nowrap;
+        }
+        .chip i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+        .chip.crit { background: var(--crit-soft); color: var(--crit); }
+        .chip.short { background: var(--warn-soft); color: var(--warn); }
+        .chip.ok { background: var(--good-soft); color: var(--good); }
+        .chip.ai-badge { background: var(--crit); color: #fff; font-family: var(--mono); font-size: 11px;}
+        .chip.ai-badge i { background: #fff; }
+
+        dialog {
+            border: none; border-radius: 12px; background: var(--surface);
+            color: var(--ink); padding: 0; max-width: 440px; width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); margin: auto;
+        }
+        dialog::backdrop { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(3px); }
+        .modal-header { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h3 { margin: 0; font-size: 16px; }
+        .modal-body { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+        .modal-footer { padding: 16px 20px; border-top: 1px solid var(--line); display: flex; justify-content: flex-end; gap: 10px; background: var(--surface2); }
+        
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { font-size: 13px; font-weight: 500; color: var(--ink2); }
+        .form-group input, .form-group select {
+            padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px;
+            background: var(--bg); font-family: var(--sans); font-size: 14px;
+        }
+        .form-group input:focus, .form-group select:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+
+        /* Custom Toast Notification */
+        #toast {
+            position: fixed; bottom: -60px; left: 50%; transform: translateX(-50%);
+            background: var(--good); color: #fff; padding: 10px 20px;
+            border-radius: 6px; font-weight: 500; font-size: 14px;
+            transition: bottom 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        #toast.show { bottom: 30px; }
+        #toast.err { background: var(--crit); }
+        .chip.neutral { background: var(--surface2); color: var(--ink2); }
+        .link-state { font-size: 12px; font-weight: 500; color: var(--ink3); display: inline-flex; align-items: center; gap: 6px; }
+        .link-state i { width: 7px; height: 7px; border-radius: 50%; background: var(--ink3); }
+        .link-state.on { color: var(--good); } .link-state.on i { background: var(--good); }
+        .link-state.off { color: var(--crit); } .link-state.off i { background: var(--crit); }
+    </style>
+</head>
+<body>
+
+    <div class="wrap">
+        <header class="top">
+            <div class="brand">
+                MediSync Clinic Portal <small>Katpadi Community Clinic</small>
+                <span class="clinic-tag">ID: F2_KATPADI</span>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <a href="stock_update.html?fac=F2" class="btn">Update stock</a>
+                <a href="MediSync.html" class="btn primary">Switch to Network Command</a>
+            </div>
+        </header>
+
+        <div class="ai-banner" id="aiAlert">
+            <i></i>
+            <div>
+                <strong>AI Surge Warning: 81.3% risk detected for Amoxicillin</strong> based on 14-day consumption curve. Please request emergency stock immediately to prevent stockout.
+            </div>
+        </div>
+
+        <div class="kpis">
+            <div class="kpi">
+                <span>Total Tracked</span>
+                <b class="mono">2</b>
+            </div>
+            <div class="kpi crit">
+                <span>Critical Shortages</span>
+                <b class="mono">2</b>
+            </div>
+            <div class="kpi">
+                <span>Inbound Transfers</span>
+                <b class="mono" id="kpiInbound">0</b>
+            </div>
+        </div>
+
+        <main>
+            <h2>Local Inventory Status</h2>
+            <div class="panel">
+                <div class="tbl">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Medicine</th>
+                                <th class="n">On Hand</th>
+                                <th class="n">Use / Day</th>
+                                <th class="n">Cover (Days)</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Amoxicillin Row -->
+                            <tr style="box-shadow: inset 3px 0 0 var(--crit);">
+                                <td>
+                                    Amoxicillin 500 mg
+                                    <small>Essential · capsules</small>
+                                </td>
+                                <td class="n mono">35</td>
+                                <td class="n mono">40.0</td>
+                                <td class="n mono" style="color: var(--crit); font-weight: 500;">0.9</td>
+                                <td>
+                                    <div style="display: flex; gap: 8px; align-items: center;">
+                                        <span class="chip crit"><i></i>Critical</span>
+                                        <span class="chip ai-badge" title="Support Vector Machine Prediction"><i></i>AI Risk: 81.3%</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="btn sm" onclick="openRequestModal('amox')">Request Stock</button>
+                                </td>
+                            </tr>
+                            <!-- Normal Saline Row -->
+                            <tr style="box-shadow: inset 3px 0 0 var(--crit);">
+                                <td>
+                                    Normal saline 500 ml
+                                    <small>Essential · bags</small>
+                                </td>
+                                <td class="n mono">10</td>
+                                <td class="n mono">15.0</td>
+                                <td class="n mono" style="color: var(--crit); font-weight: 500;">0.7</td>
+                                <td>
+                                    <span class="chip crit"><i></i>Critical</span>
+                                </td>
+                                <td>
+                                    <button class="btn sm" onclick="openRequestModal('sal')">Request Stock</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h2 style="margin-top:28px; display:flex; align-items:center; gap:10px;">My Requests
+                <span class="link-state" id="linkState"><i></i>Connecting…</span></h2>
+            <div class="panel">
+                <div class="tbl">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Request</th>
+                                <th>Medicine</th>
+                                <th class="n">Requested</th>
+                                <th class="n">Dispatched</th>
+                                <th>Urgency</th>
+                                <th class="n">Total Cost</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reqBody">
+                            <tr><td colspan="6" style="text-align:center; color: var(--ink3);">No requests yet.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <dialog id="requestModal">
+        <div class="modal-header">
+            <h3>Request Emergency Stock</h3>
+            <button class="btn sm" style="border:none; padding:4px 8px; background:none;" onclick="closeModal()">✕</button>
+        </div>
+        <form id="requestForm" method="dialog">
+            <div class="modal-body">
+                <p style="font-size: 13px; color: var(--ink2); margin: 0;">Submit a request to the MediSync network. The Smart Allocation engine will attempt to find a donor facility.</p>
+                
+                <div class="form-group">
+                    <label for="drugSelect">Medicine</label>
+                    <select id="drugSelect" required>
+                        <option value="">Select medicine...</option>
+                        <option value="amox">Amoxicillin 500 mg</option>
+                        <option value="sal">Normal saline 500 ml</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="qtyInput">Requested Quantity</label>
+                    <input type="number" id="qtyInput" min="1" max="5000" placeholder="e.g. 200" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="urgencySelect">Dispatch Urgency</label>
+                    <select id="urgencySelect">
+                        <option value="standard">Standard (Next available routing)</option>
+                        <option value="emergency" selected style="color: var(--crit); font-weight: 600;">⚡ Emergency (Same-day Dispatch)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="btn primary">Submit Request</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Toast Notification Container -->
+    <div id="toast">Request submitted to central network successfully!</div>
+
+    <script>
+        // --- This clinic's identity on the MediSync network (matches input_data/network_data.json) ---
+        // --- This clinic's identity on the MediSync network (matches input_data/network_data.json) ---
+        const CLINIC = { fac: 'F2', name: 'Katpadi Community Clinic' };
+        const DRUG_NAMES = { amox: 'Amoxicillin 500 mg', sal: 'Normal saline 500 ml' };
+        
+        // Add the financial wholesale prices to match the backend
+        const DRUG_PRICES = { amox: 12.50, sal: 35.00 };
+
+        const modal = document.getElementById('requestModal');
+        const form = document.getElementById('requestForm');
+        const drugSelect = document.getElementById('drugSelect');
+        const toast = document.getElementById('toast');
+
+        // Instant same-browser signal to an open dashboard tab (the server is still the source of truth)
+        let bc = null;
+        try { bc = new BroadcastChannel('medisync'); } catch (_) {}
+
+        // Open modal and pre-fill the medicine
+        function openRequestModal(drugId) {
+            drugSelect.value = drugId || '';
+            document.getElementById('qtyInput').value = '';
+            modal.showModal();
+        }
+
+        function closeModal() {
+            modal.close();
+        }
+
+        // Submit the request to the central MediSync server
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const drug = drugSelect.value;
+            const qty = parseInt(document.getElementById('qtyInput').value, 10);
+            const emergency = document.getElementById('urgencySelect').value === 'emergency';
+            if (!drug || !(qty > 0)) return;
+
+            const body = { fac: CLINIC.fac, clinic: CLINIC.name, drug, drug_name: DRUG_NAMES[drug] || drug, qty, emergency };
+            const btn = form.querySelector('button[type="submit"]');
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/requests', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                if (!res.ok) throw new Error('Server said ' + res.status);
+                const saved = await res.json();
+
+                // Wake up any dashboard open in this browser right away
+                if (bc) bc.postMessage({ type: 'new_request', id: saved.id });
+                try { localStorage.setItem('network_incoming_request', JSON.stringify({ id: saved.id, time: Date.now() })); } catch (_) {}
+
+                closeModal();
+                showToast(`${saved.id}: ${qty} units of ${body.drug_name} sent to the MediSync network.`);
+                loadRequests();
+            } catch (err) {
+                console.error(err);
+                showToast('Could not reach the MediSync server. Is app.py running?', true);
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        // --- Live status of this clinic's requests ---
+        const STATUS = {
+            pending:    ['short', 'Waiting for match'],
+            partial:    ['short', 'Partly dispatched'],
+            dispatched: ['ok', 'Dispatched'],
+            rejected:   ['crit', 'Rejected']
+        };
+        const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+        async function loadRequests() {
+            const state = document.getElementById('linkState');
+            try {
+                const res = await fetch('/api/requests?fac=' + encodeURIComponent(CLINIC.fac), { cache: 'no-store' });
+                if (!res.ok) throw new Error(res.status);
+                const rows = await res.json();
+                state.className = 'link-state on'; state.innerHTML = '<i></i>Connected to network';
+
+                document.getElementById('kpiInbound').textContent =
+                    new Set(rows.flatMap(r => r.transfers || [])).size;
+
+                document.getElementById('reqBody').innerHTML = rows.length ? rows.map(r => {
+                    const [k, label] = STATUS[r.status] || ['neutral', r.status];
+                    const tr = r.transfers && r.transfers.length ? `<small>${r.transfers.map(esc).join(', ')}</small>` : '';
+                    
+                    // Calculate ledger exchange cost for dispatched units
+                    const unitPrice = DRUG_PRICES[r.drug] || 0;
+                    const totalCost = (r.filled || 0) * unitPrice;
+                    const costStr = totalCost > 0 ? `₹${totalCost.toLocaleString('en-IN', {minimumFractionDigits: 2})}` : '—';
+
+                    return `<tr>
+                        <td class="mono">${esc(r.id)}<small>${esc(r.created_at.replace('T', ' '))}</small></td>
+                        <td>${esc(r.drug_name)}</td>
+                        <td class="n mono">${r.qty}</td>
+                        <td class="n mono">${r.filled || 0}</td>
+                        <td>${r.emergency ? '<span class="chip crit"><i></i>Emergency</span>' : '<span class="chip neutral"><i></i>Standard</span>'}</td>
+                        <td class="n mono" style="color:var(--ink); font-weight:500;">${costStr}</td>
+                        <td><span class="chip ${k}"><i></i>${label}</span>${tr}</td>
+                    </tr>`;
+                }).join('') : '<tr><td colspan="7" style="text-align:center; color: var(--ink3);">No requests yet.</td></tr>';
+            } catch (_) {
+                state.className = 'link-state off'; state.innerHTML = '<i></i>Server offline';
+            }
+        }
+        loadRequests();
+        setInterval(loadRequests, 4000);
+
+        // Show a custom toast instead of alert()
+        function showToast(message, isError) {
+            toast.textContent = message;
+            toast.classList.toggle('err', !!isError);
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        // Close modal if user clicks outside of the dialog box
+        modal.addEventListener('click', (e) => {
+            const r = modal.getBoundingClientRect();
+            if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) {
+                modal.close();
+            }
+        });
+    </script>
+</body>
+</html>

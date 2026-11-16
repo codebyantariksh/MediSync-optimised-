@@ -1,0 +1,68 @@
+{
+  "fac": "F2",
+  "items": [
+    {
+      "drug_id": "arte",
+      "medicine": "Artesunate inj.",
+      "daily_usage": 5.0,
+      "batches": [
+        {
+          "batch_id": "AMX-2026-11",
+          "qty": 1200.0,
+          "expiry_date": "2027-06-30"
+        }
+      ],
+      "growth_trend": 0.0
+    },
+    {
+      "drug_id": "sal",
+      "medicine": "Normal saline 500 ml",
+      "daily_usage": 15.0,
+      "batches": [
+        {
+          "batch_id": "B_KC_SAL_1",
+          "qty": 2030.0,
+          "expiry_date": "2027-08-30"
+        }
+      ],
+      "growth_trend": 0.0
+    }
+  ],
+  "history": [
+    {
+      "submission": "S-1001",
+      "approved_at": "2026-10-11T16:28:04",
+      "medicines": [
+        "arte"
+      ]
+    },
+    {
+      "submission": "S-1002",
+      "approved_at": "2026-10-11T16:31:14",
+      "medicines": [
+        "sal"
+      ]
+    },
+    {
+      "submission": "S-1003",
+      "approved_at": "2026-10-11T16:32:05",
+      "medicines": [
+        "sal"
+      ]
+    },
+    {
+      "submission": "S-1004",
+      "approved_at": "2026-10-11T16:48:17",
+      "medicines": [
+        "sal"
+      ]
+    },
+    {
+      "submission": "S-1005",
+      "approved_at": "2026-10-18T11:23:52",
+      "medicines": [
+        "sal"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediSync | Donor Consent Portal</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+    <style>
+        /* Inheriting your exact MediSync Core Palette */
+        :root { --bg: #F3F6F7; --surface: #FFFFFF; --surface2: #EAEFF1; --line: #D8DFE3; --ink: #12222A; --ink2: #47585F; --ink3: #72838B; --accent: #0A6C74; --accent-ink: #FFFFFF; --accent-soft: #DAEEEF; --crit: #B8322A; --crit-soft: #FAE4E1; --warn: #9A5F06; --warn-soft: #FAEED5; --good: #256B43; --good-soft: #DFF0E6; --sans: 'IBM Plex Sans', sans-serif; --mono: 'IBM Plex Mono', monospace; }
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font: 14px/1.5 var(--sans); padding-bottom: 48px; }
+        .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+        .top { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+        .brand { font-weight: 600; font-size: 20px; display: flex; align-items: baseline; gap: 10px; }
+        .brand small { font-weight: 400; font-size: 14px; color: var(--ink2); }
+        .clinic-tag { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink2); border: 1px solid var(--line); border-radius: 4px; padding: 2px 6px; }
+        .btn { background: var(--surface); border: 1px solid var(--line); border-radius: 5px; padding: 6px 12px; color: var(--ink); cursor: pointer; font-family: inherit; transition: 0.2s; text-decoration: none; }
+        .btn:hover { border-color: var(--ink3); }
+        .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 500; }
+        .btn.primary:hover { filter: brightness(1.1); }
+        .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px; margin-bottom: 24px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        table { border-collapse: collapse; width: 100%; min-width: 700px; }
+        th { font-size: 11.5px; font-weight: 500; color: var(--ink2); text-align: left; padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--surface2); text-transform: uppercase; }
+        td { padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+        .mono, td.n { font-family: var(--mono); }
+        td.n, th.n { text-align: right; }
+        .chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: 12px; }
+        .chip i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+        .chip.crit { background: var(--crit-soft); color: var(--crit); }
+        .chip.ok { background: var(--good-soft); color: var(--good); }
+        .chip.sur { background: var(--accent-soft); color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <div class="wrap">
+        <header class="top">
+            <div class="brand">
+                MediSync Donor Consent <small>Vellore Central Referral</small>
+                <span class="clinic-tag">ID: F1_VELLORE</span>
+            </div>
+            <a href="MediSync.html" class="btn">Back to Network</a>
+        </header>
+
+        <h2>Action Required: Inbound Network Requests</h2>
+        <p style="color: var(--ink2); font-size: 13px; margin-top:-8px;">The Smart Allocation engine has identified your facility as a donor. Review and authorize the release of your surplus stock.</p>
+        
+        <div class="panel">
+            <div style="overflow-x: auto; margin: -16px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Request ID</th>
+                            <th>Receiving Clinic</th>
+                            <th>Medicine</th>
+                            <th class="n">Requested Qty</th>
+                            <th>Urgency</th>
+                            <th class="n">Exchange Ledger</th>
+                            <th>Action (Consent)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="consentBody">
+                        <tr><td colspan="7" style="text-align:center; color: var(--ink3);">Loading pending requests...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Use exact prices matching the backend to calculate the invoice
+        const DRUG_PRICES = { amox: 12.50, sal: 35.00, oxy: 45.00, insu: 350.00 };
+        // This donor's identity on the network. fac must match the hospital "id" in input_data.
+        const DONOR = { fac: 'F1', name: 'Vellore Central Referral' };
+        const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+        async function loadConsentRequests() {
+            try {
+                // Fetch all requests from the network
+                const res = await fetch('/api/requests', { cache: 'no-store' });
+                const rows = await res.json();
+                
+                // Filter for requests that are still pending
+                const pending = rows.filter(r => r.status === 'pending' || r.status === 'partial');
+                const tbody = document.getElementById('consentBody');
+
+                if (pending.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color: var(--ink3);">No pending donation requests at this time.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = pending.map(r => {
+                    const remaining = Math.max(0, r.qty - (r.filled || 0));   // the dashboard may already have sent part of it
+                    const cost = (remaining * (DRUG_PRICES[r.drug] || 10)).toLocaleString('en-IN', {minimumFractionDigits: 2});
+
+                    return `
+                    <tr>
+                        <td class="mono" style="font-weight:600;">${esc(r.id)}</td>
+                        <td>${esc(r.clinic)}</td>
+                        <td>${esc(r.drug_name)}</td>
+                        <td class="n mono">${remaining}${remaining !== r.qty ? ` <small style="color:var(--ink3)">of ${r.qty}</small>` : ''}</td>
+                        <td>${r.emergency ? '<span class="chip crit"><i></i>Emergency</span>' : '<span class="chip ok"><i></i>Standard</span>'}</td>
+                        <td class="n mono" style="font-weight:500;">₹${cost}</td>
+                        <td>
+                            <button class="btn primary sm" data-id="${esc(r.id)}" data-qty="${r.qty}" data-remaining="${remaining}" onclick="authorizeRelease(this)">Authorize Release</button>
+                        </td>
+                    </tr>`;
+                }).join('');
+            } catch (err) {
+                console.error(err);
+                document.getElementById('consentBody').innerHTML = '<tr><td colspan="7" style="text-align:center; color: var(--crit);">Server offline. Ensure app.py is running.</td></tr>';
+            }
+        }
+
+        async function authorizeRelease(btn) {
+            const reqId = btn.dataset.id;
+            const qty = parseInt(btn.dataset.qty, 10);
+            const remaining = parseInt(btn.dataset.remaining, 10);
+            btn.textContent = "Authorizing...";
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/requests/' + encodeURIComponent(reqId), {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        status: 'dispatched',
+                        filled: qty,                    // request is now fully covered
+                        donor: DONOR.fac,               // who is giving the stock
+                        donor_name: DONOR.name,
+                        donor_qty: remaining,           // how much this donor is sending
+                        transfer: 'D-' + reqId          // unique transfer id the dashboard will show
+                    })
+                });
+                if (res.status === 409) {
+                    btn.textContent = "Already handled";
+                } else if (!res.ok) {
+                    throw new Error('Server said ' + res.status);
+                } else {
+                    btn.textContent = "Authorized";
+                    // Wake up the dashboard / clinic tabs in this browser right away
+                    try { new BroadcastChannel('medisync').postMessage({ type: 'consent_approved', id: reqId }); } catch (_) {}
+                }
+                setTimeout(loadConsentRequests, 500);
+            } catch (err) {
+                console.error(err);
+                btn.textContent = "Error – retry";
+                btn.disabled = false;
+            }
+        }
+
+        loadConsentRequests();
+        setInterval(loadConsentRequests, 3000);
+    </script>
+</body>
+</html>

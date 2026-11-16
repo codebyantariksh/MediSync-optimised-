@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>MediSync | Stock Update</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--bg:#F3F6F7;--surface:#FFFFFF;--surface2:#EAEFF1;--line:#D8DFE3;--ink:#12222A;--ink2:#47585F;--ink3:#72838B;--accent:#0A6C74;--accent-ink:#FFFFFF;--accent-soft:#DAEEEF;--crit:#B8322A;--crit-soft:#FAE4E1;--warn:#9A5F06;--warn-soft:#FAEED5;--good:#256B43;--good-soft:#DFF0E6;--sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+@media (prefers-color-scheme:dark){:root{--bg:#0D191E;--surface:#14242B;--surface2:#1B2F38;--line:#2A424C;--ink:#E6EEF1;--ink2:#A7BAC2;--ink3:#7F959E;--accent:#4FC1C8;--accent-ink:#06262A;--accent-soft:#143A3F;--crit:#F28074;--crit-soft:#3B201D;--warn:#E5A646;--warn-soft:#392D14;--good:#6FCB95;--good-soft:#163325}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 var(--sans);padding-bottom:48px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:16px 0;border-bottom:1px solid var(--line);margin-bottom:20px}
+.brand{font-weight:600;font-size:20px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.brand small{font-weight:400;font-size:14px;color:var(--ink2)}
+.tag{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);border:1px solid var(--line);border-radius:4px;padding:2px 6px}
+.btn{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:6px 12px;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--ink3)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:500}
+.btn.sm{padding:3px 9px;font-size:12.5px}
+.btn.ghost{border-color:transparent;background:none;color:var(--ink2)}
+.btn.ghost:hover{color:var(--crit)}
+.btn[disabled]{opacity:.45;cursor:default}
+h2{font-size:16px;margin:0 0 4px;font-weight:600}
+p.lead{margin:0 0 16px;color:var(--ink2)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:16px}
+.banner{border-radius:8px;padding:12px 14px;margin-bottom:16px;border:1px solid}
+.banner.wait{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.banner.err{background:var(--crit-soft);border-color:var(--crit);color:var(--crit)}
+.banner.ok{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.med{border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:12px;background:var(--surface)}
+.med.changed{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.med-head{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:10px}
+.med-head .name{font-weight:600;flex:1;min-width:180px}
+.med-head .name small{display:block;font-weight:400;color:var(--ink3);font-size:12px}
+label.f{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--ink2)}
+input,select,textarea{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:6px 9px;min-width:0}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-soft)}
+input.bad{border-color:var(--crit)}
+table{border-collapse:collapse;width:100%}
+th{font-size:11.5px;font-weight:500;color:var(--ink2);text-align:left;letter-spacing:.04em;text-transform:uppercase;padding:4px 6px;border-bottom:1px solid var(--line)}
+td{padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td input{width:100%}
+.tbl{overflow-x:auto}
+.batches table{min-width:460px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;padding:1px 8px;border-radius:10px;white-space:nowrap}
+.chip i{width:6px;height:6px;border-radius:50%;background:currentColor}
+.chip.wait{background:var(--warn-soft);color:var(--warn)}
+.chip.ok{background:var(--good-soft);color:var(--good)}
+.chip.crit{background:var(--crit-soft);color:var(--crit)}
+.chip.new{background:var(--accent-soft);color:var(--accent)}
+.note{font-size:12.5px;color:var(--ink2)}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+.foot{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
+.foot label.f{flex:1;min-width:200px}
+.subs td small{display:block;color:var(--ink3);font-size:12px}
+.empty{padding:18px;text-align:center;color:var(--ink3)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">MediSync Stock Update <small id="facName">Loading…</small><span class="tag" id="facTag"></span></div>
+    <a class="btn" href="clinic_portal.html">Back to portal</a>
+  </header>
+
+  <div id="pick" class="panel" hidden>
+    <h2>Choose your facility</h2>
+    <p class="lead">Open this page from your facility portal, or pick it here.</p>
+    <div class="row"><select id="facPick" aria-label="Facility"></select><button class="btn primary" id="facGo">Open</button></div>
+  </div>
+
+  <div id="main" hidden>
+    <div id="banner"></div>
+    <h2>Your stock</h2>
+    <p class="lead">Edit the numbers below and submit. Changes go to the MediSync team for review and only reach the network once they approve them. Medicines you don't touch stay as they are.</p>
+
+    <div id="meds"></div>
+
+    <div class="panel">
+      <div class="row">
+        <label class="f">Add a medicine you now stock<select id="addSel"></select></label>
+        <button class="btn" id="addBtn">Add medicine</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="foot">
+        <label class="f">Submitted by (name and role)<input id="who" maxlength="80" placeholder="e.g. R. Priya, Chief Pharmacist"></label>
+        <label class="f">Note for the reviewer (optional)<input id="note" maxlength="500" placeholder="e.g. Physical count on 11 Oct"></label>
+        <button class="btn primary" id="submitBtn" disabled>Submit for approval</button>
+      </div>
+      <div class="note" id="summary" style="margin-top:8px"></div>
+    </div>
+
+    <h2 style="margin-top:24px">My submissions</h2>
+    <div class="panel subs tbl"><table>
+      <thead><tr><th>Update</th><th>Medicines</th><th>Submitted by</th><th>Status</th><th>Reviewer note</th></tr></thead>
+      <tbody id="subBody"><tr><td colspan="5" class="empty">No submissions yet.</td></tr></tbody>
+    </table></div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today=()=>{const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)};
+const FAC=new URLSearchParams(location.search).get('fac');
+
+let CAT={}, ORIG={}, ITEMS=[], PENDING=null, lastApproved=null;
+
+// Same shape both sides so "changed?" is a straight comparison
+const norm=it=>JSON.stringify({u:+(+it.daily_usage).toFixed(2),b:it.batches.map(b=>[String(b.batch_id).trim(),+(+b.qty).toFixed(2),b.expiry_date]).sort((x,y)=>x[0]<y[0]?-1:1)});
+const isChanged=it=>it.isNew||!ORIG[it.drug_id]||norm(it)!==ORIG[it.drug_id];
+
+async function init(){
+  if(!FAC){
+    $('pick').hidden=false;$('facName').textContent='';
+    try{
+      const fs=await (await fetch('/api/facilities')).json();
+      $('facPick').innerHTML=fs.map(f=>`<option value="${esc(f.id)}">${esc(f.name)}</option>`).join('');
+      $('facGo').onclick=()=>{location.search='?fac='+encodeURIComponent($('facPick').value)};
+    }catch(_){$('pick').innerHTML='<div class="banner err">Server offline. Start app.py.</div>'}
+    return;
+  }
+  await loadStock();
+  await loadSubs();
+  setInterval(loadSubs,5000);
+}
+
+async function loadStock(){
+  const res=await fetch('/api/stock/'+encodeURIComponent(FAC),{cache:'no-store'});
+  if(!res.ok){$('facName').textContent='Unknown facility';document.body.insertAdjacentHTML('beforeend','<div class="wrap"><div class="banner err">This facility is not in the MediSync network. Check the link from your portal.</div></div>');return}
+  const d=await res.json();
+  $('facName').textContent=d.facility.name;$('facTag').textContent='ID: '+d.facility.id;document.title='MediSync | Stock Update · '+d.facility.name;
+  CAT={};d.catalogue.forEach(c=>CAT[c.id]=c);
+  ORIG={};ITEMS=d.items.map(it=>{const c={drug_id:it.drug_id,daily_usage:it.daily_usage,batches:it.batches.map(b=>({...b}))};ORIG[it.drug_id]=norm(c);return c});
+  $('main').hidden=false;
+  render();
+}
+
+function render(){
+  const lock=!!PENDING;
+  $('meds').innerHTML=ITEMS.length?ITEMS.map((it,i)=>{
+    const c=CAT[it.drug_id]||{name:it.drug_id,unit:'units'};
+    return `<div class="med${isChanged(it)?' changed':''}" data-i="${i}">
+      <div class="med-head">
+        <div class="name">${nameHTML(it)}</div>
+        <label class="f">Daily use (${esc(c.unit)})<input type="number" min="0.01" step="any" data-k="use" value="${esc(it.daily_usage)}" ${lock?'disabled':''} style="width:130px"></label>
+        <span class="act">${actHTML(it)}</span>
+      </div>
+      <div class="batches tbl"><table><thead><tr><th>Batch no.</th><th>Quantity</th><th>Expiry date</th><th></th></tr></thead><tbody>
+      ${it.batches.map((b,j)=>`<tr data-j="${j}">
+        <td><input data-k="bid" maxlength="40" value="${esc(b.batch_id)}" ${lock?'disabled':''} aria-label="Batch number"></td>
+        <td><input type="number" min="0" step="any" data-k="qty" value="${esc(b.qty)}" ${lock?'disabled':''} aria-label="Quantity"></td>
+        <td><input type="date" min="${today()}" data-k="exp" value="${esc(b.expiry_date)}" ${lock?'disabled':''} aria-label="Expiry date"></td>
+        <td style="width:1%">${lock?'':`<button class="btn sm ghost" data-a="delb" title="Remove batch" aria-label="Remove batch">✕</button>`}</td></tr>`).join('')}
+      </tbody></table></div>
+      ${lock?'':'<button class="btn sm" data-a="addb" style="margin-top:6px">+ Add batch</button>'}
+    </div>`}).join(''):'<div class="panel empty">No medicines on record yet. Add one below.</div>';
+  const have=new Set(ITEMS.map(i=>i.drug_id));
+  const opts=Object.values(CAT).filter(c=>!have.has(c.id));
+  $('addSel').innerHTML=opts.length?opts.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join(''):'<option value="">All medicines are listed</option>';
+  $('addSel').disabled=$('addBtn').disabled=lock||!opts.length;
+  $('who').disabled=$('note').disabled=lock;
+  updateSummary();
+}
+const fmt=n=>Math.round(n).toLocaleString('en-IN');
+function nameHTML(it){
+  const c=CAT[it.drug_id]||{name:it.drug_id,unit:'units'}, ch=isChanged(it);
+  const total=it.batches.reduce((a,b)=>a+(+b.qty||0),0);
+  return `${esc(c.name)} ${it.isNew?'<span class="chip new"><i></i>New</span>':ch?'<span class="chip new"><i></i>Edited</span>':''}<small>${esc(c.unit)} · ${fmt(total)} on hand</small>`;
+}
+function actHTML(it){return isChanged(it)&&!PENDING?`<button class="btn sm" data-a="undo">${it.isNew?'Remove':'Undo changes'}</button>`:''}
+
+function changedItems(){return ITEMS.filter(isChanged)}
+function updateSummary(){
+  const n=changedItems().length;
+  $('submitBtn').disabled=!!PENDING||n===0;
+  $('summary').textContent=PENDING?'':n?`${n} medicine${n>1?'s':''} will be sent for review.`:'Make a change to submit.';
+  document.querySelectorAll('.med').forEach(el=>{
+    const it=ITEMS[+el.dataset.i];if(!it)return;
+    el.classList.toggle('changed',isChanged(it));
+    el.querySelector('.name').innerHTML=nameHTML(it);    // text only, inputs are left alone
+    el.querySelector('.act').innerHTML=actHTML(it);
+  });
+}
+
+// Typing updates the data in place (no re-render, so the cursor stays put)
+$('meds').addEventListener('input',e=>{
+  const k=e.target.dataset.k;if(!k)return;
+  const m=e.target.closest('.med'),it=ITEMS[+m.dataset.i];
+  if(k==='use')it.daily_usage=e.target.value;
+  else{const b=it.batches[+e.target.closest('tr').dataset.j];
+    if(k==='bid')b.batch_id=e.target.value;if(k==='qty')b.qty=e.target.value;if(k==='exp')b.expiry_date=e.target.value}
+  e.target.classList.remove('bad');
+  updateSummary();
+});
+$('meds').addEventListener('click',e=>{
+  const a=e.target.dataset.a;if(!a)return;
+  const m=e.target.closest('.med'),i=+m.dataset.i,it=ITEMS[i];
+  if(a==='addb')it.batches.push({batch_id:'',qty:'',expiry_date:''});
+  if(a==='delb')it.batches.splice(+e.target.closest('tr').dataset.j,1);
+  if(a==='undo'){if(it.isNew)ITEMS.splice(i,1);else{const o=JSON.parse(ORIG[it.drug_id]);it.daily_usage=o.u;it.batches=o.b.map(([id,q,x])=>({batch_id:id,qty:q,expiry_date:x}))}}
+  render();
+});
+$('addBtn').onclick=()=>{
+  const id=$('addSel').value;if(!id)return;
+  ITEMS.push({drug_id:id,daily_usage:'',batches:[{batch_id:'',qty:'',expiry_date:''}],isNew:true});
+  render();
+  const last=document.querySelectorAll('.med');last[last.length-1].scrollIntoView({behavior:'smooth',block:'center'});
+};
+
+function banner(kind,html){$('banner').innerHTML=html?`<div class="banner ${kind}">${html}</div>`:''}
+
+// Catch obvious mistakes here; the server checks everything again
+function checkLocal(items){
+  const t=today();
+  for(const it of items){
+    const name=(CAT[it.drug_id]||{}).name||it.drug_id;
+    if(!(+it.daily_usage>0))return `${name}: enter daily use (more than 0).`;
+    if(!it.batches.length)return `${name}: add at least one batch, or undo the changes.`;
+    const ids=new Set();
+    for(const b of it.batches){
+      const bid=String(b.batch_id).trim();
+      if(!bid)return `${name}: every batch needs a batch number.`;
+      if(ids.has(bid))return `${name}: batch ${bid} is entered twice.`;ids.add(bid);
+      if(b.qty===''||!(+b.qty>=0))return `${name}, batch ${bid}: enter a quantity.`;
+      if(!b.expiry_date)return `${name}, batch ${bid}: enter the expiry date.`;
+      if(b.expiry_date<=t)return `${name}, batch ${bid}: this batch has expired. Remove it.`;
+    }
+  }
+  return null;
+}
+
+$('submitBtn').onclick=async()=>{
+  const items=changedItems(), who=$('who').value.trim();
+  if(!who){banner('err','Enter your name and role before submitting.');$('who').classList.add('bad');$('who').focus();return}
+  const err=checkLocal(items);if(err){banner('err',esc(err));return}
+  if(!confirm(`Send ${items.length} medicine update${items.length>1?'s':''} to MediSync for approval?\n\nYou can't change them again until the team has reviewed this update.`))return;
+  $('submitBtn').disabled=true;
+  try{
+    const res=await fetch('/api/stock-submissions',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({fac:FAC,submitted_by:who,note:$('note').value.trim(),
+        items:items.map(it=>({drug_id:it.drug_id,daily_usage:+it.daily_usage,batches:it.batches.map(b=>({batch_id:String(b.batch_id).trim(),qty:+b.qty,expiry_date:b.expiry_date}))}))})});
+    const d=await res.json();
+    if(!res.ok){banner('err',esc(d.error||('Server said '+res.status)));updateSummary();return}
+    $('note').value='';
+    await loadSubs();
+  }catch(_){banner('err','Could not reach the MediSync server. Is app.py running?');updateSummary()}
+};
+
+async function loadSubs(){
+  try{
+    const rows=await (await fetch('/api/stock-submissions?fac='+encodeURIComponent(FAC),{cache:'no-store'})).json();
+    const ST={pending:['wait','Waiting for approval'],approved:['ok','Approved'],rejected:['crit','Rejected']};
+    $('subBody').innerHTML=rows.length?rows.map(s=>{const st=ST[s.status]||['wait',s.status];
+      return `<tr><td class="mono">${esc(s.id)}<small>${esc(s.submitted_at.replace('T',' '))}</small></td>
+        <td>${s.items.map(it=>esc((CAT[it.drug_id]||{}).name||it.medicine)).join(', ')}</td>
+        <td>${esc(s.submitted_by)}</td><td><span class="chip ${st[0]}"><i></i>${st[1]}</span>${s.reviewed_at?`<small>${esc(s.reviewed_at.replace('T',' '))}</small>`:''}</td>
+        <td>${esc(s.review_note)||'—'}</td></tr>`}).join(''):'<tr><td colspan="5" class="empty">No submissions yet.</td></tr>';
+
+    const pend=rows.find(s=>s.status==='pending')||null;
+    const latestDone=rows.find(s=>s.status!=='pending');
+    const wasLocked=!!PENDING;
+    PENDING=pend;
+    if(pend){
+      banner('wait',`<b>${esc(pend.id)} is waiting for approval.</b> The form is locked until the MediSync team reviews it. The stock shown is what is currently live.`);
+      if(!wasLocked){await loadStock();return}   // drop unsent edits and show live data while locked
+    }else if(wasLocked&&latestDone){
+      if(latestDone.status==='approved')banner('ok',`<b>${esc(latestDone.id)} was approved.</b> Your stock below is now live on the network.`);
+      else banner('err',`<b>${esc(latestDone.id)} was rejected.</b> ${esc(latestDone.review_note)} You can correct the numbers and submit again.`);
+      await loadStock();return;
+    }
+    // no lock change: leave the form alone so typing is never interrupted
+  }catch(_){}
+}
+
+init();
+})();
+</script>
+</body>
+</html>

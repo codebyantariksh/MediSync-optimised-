@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>MediSync | Stock Approvals</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--bg:#F3F6F7;--surface:#FFFFFF;--surface2:#EAEFF1;--line:#D8DFE3;--ink:#12222A;--ink2:#47585F;--ink3:#72838B;--accent:#0A6C74;--accent-ink:#FFFFFF;--accent-soft:#DAEEEF;--crit:#B8322A;--crit-soft:#FAE4E1;--warn:#9A5F06;--warn-soft:#FAEED5;--good:#256B43;--good-soft:#DFF0E6;--sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+@media (prefers-color-scheme:dark){:root{--bg:#0D191E;--surface:#14242B;--surface2:#1B2F38;--line:#2A424C;--ink:#E6EEF1;--ink2:#A7BAC2;--ink3:#7F959E;--accent:#4FC1C8;--accent-ink:#06262A;--accent-soft:#143A3F;--crit:#F28074;--crit-soft:#3B201D;--warn:#E5A646;--warn-soft:#392D14;--good:#6FCB95;--good-soft:#163325}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 var(--sans);padding-bottom:48px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono,td.n{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:16px 0;border-bottom:1px solid var(--line);margin-bottom:20px}
+.brand{font-weight:600;font-size:20px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.brand small{font-weight:400;font-size:14px;color:var(--ink2)}
+.btn{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:6px 12px;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center}
+.btn:hover{border-color:var(--ink3)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:500}
+.btn.danger{color:var(--crit);border-color:var(--crit)}
+.btn[disabled]{opacity:.45;cursor:default}
+h2{font-size:16px;margin:0 0 10px;font-weight:600}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:16px}
+input,textarea{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:6px 9px}
+input:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-soft)}
+.sub-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start;margin-bottom:10px}
+.sub-head .t{font-weight:600;font-size:15px}
+.sub-head small{display:block;color:var(--ink2);font-size:12.5px;font-weight:400}
+.quote{background:var(--surface2);border-radius:6px;padding:8px 10px;margin:0 0 10px;color:var(--ink2);font-size:13px}
+table{border-collapse:collapse;width:100%}
+th{font-size:11.5px;font-weight:500;color:var(--ink2);text-align:left;letter-spacing:.04em;text-transform:uppercase;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right}
+td small{display:block;color:var(--ink3);font-size:12px}
+.tbl{overflow-x:auto}
+.diff table{min-width:760px}
+.up{color:var(--good);font-weight:500}.down{color:var(--crit);font-weight:500}
+.big{background:var(--warn-soft);color:var(--warn);border-radius:4px;padding:0 5px;font-size:11.5px;font-weight:500;margin-left:6px;white-space:nowrap}
+.batch{font-family:var(--mono);font-size:12px;color:var(--ink2);white-space:nowrap}
+.batch.add{color:var(--good)}.batch.del{color:var(--crit);text-decoration:line-through}
+.actions{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
+.actions textarea{flex:1;min-width:220px;min-height:38px;resize:vertical}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;padding:1px 8px;border-radius:10px;white-space:nowrap}
+.chip i{width:6px;height:6px;border-radius:50%;background:currentColor}
+.chip.wait{background:var(--warn-soft);color:var(--warn)}.chip.ok{background:var(--good-soft);color:var(--good)}.chip.crit{background:var(--crit-soft);color:var(--crit)}.chip.new{background:var(--accent-soft);color:var(--accent)}
+.empty{padding:20px;text-align:center;color:var(--ink3)}
+.err{color:var(--crit);font-size:13px;margin-top:6px}
+.cnt{font:12px var(--mono);color:var(--ink3);margin-left:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">MediSync Stock Approvals <small>Company review</small></div>
+    <div style="display:flex;gap:8px"><a class="btn" href="MediSync.html">Network dashboard</a><button class="btn" id="logout" hidden>Lock</button></div>
+  </header>
+
+  <div id="login" class="panel" hidden style="max-width:420px">
+    <h2>Enter the admin key</h2>
+    <p style="margin:0 0 10px;color:var(--ink2)">Only the MediSync team can approve stock changes.</p>
+    <form id="loginForm" style="display:flex;gap:8px"><input type="password" id="key" autocomplete="current-password" aria-label="Admin key" style="flex:1"><button class="btn primary">Unlock</button></form>
+    <div class="err" id="loginErr"></div>
+  </div>
+
+  <div id="main" hidden>
+    <h2>Waiting for review<span class="cnt" id="pendN"></span></h2>
+    <div id="pending"></div>
+    <h2 style="margin-top:24px">History</h2>
+    <div class="panel tbl"><table>
+      <thead><tr><th>Update</th><th>Facility</th><th>Medicines</th><th>Submitted by</th><th>Decision</th><th>Note</th></tr></thead>
+      <tbody id="hist"></tbody></table></div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=n=>(+n).toLocaleString('en-IN',{maximumFractionDigits:2});
+const KEYNAME='medisync_admin_key';
+let KEY=''; try{KEY=sessionStorage.getItem(KEYNAME)||''}catch(_){}
+let SIG='';
+
+const api=(path,opt={})=>fetch(path,{...opt,cache:'no-store',headers:{'Content-Type':'application/json','X-Admin-Key':KEY,...(opt.headers||{})}});
+
+function showLogin(msg){$('main').hidden=true;$('logout').hidden=true;$('login').hidden=false;$('loginErr').textContent=msg||'';$('key').focus()}
+$('loginForm').onsubmit=async e=>{e.preventDefault();KEY=$('key').value;SIG='';if(await load()){try{sessionStorage.setItem(KEYNAME,KEY)}catch(_){}}};
+$('logout').onclick=()=>{KEY='';try{sessionStorage.removeItem(KEYNAME)}catch(_){}showLogin()};
+
+const total=it=>it?it.batches.reduce((a,b)=>a+(+b.qty),0):0;
+function delta(a,b){
+  if(a==null)return '';
+  const d=b-a;if(Math.abs(d)<0.005)return '<small>no change</small>';
+  const pct=a>0?Math.round(d/a*100):null;
+  return `<small class="${d>0?'up':'down'}">${d>0?'+':''}${fmt(d)}${pct!=null?` (${pct>0?'+':''}${pct}%)`:''}</small>`;
+}
+// Flag jumps a reviewer should double-check before approving
+const bigJump=(a,b)=>a>0&&(b/a>=2||b/a<=0.5);
+
+function diffTable(s){
+  return `<div class="diff tbl"><table><thead><tr><th>Medicine</th><th class="n">On hand now</th><th class="n">Proposed</th><th class="n">Use/day now</th><th class="n">Proposed</th><th>Batch changes</th></tr></thead><tbody>${
+    s.items.map(it=>{
+      const cur=(s.current||{})[it.drug_id], a=total(cur), b=total(it);
+      const cb=new Map((cur?cur.batches:[]).map(x=>[x.batch_id,x])), nb=new Map(it.batches.map(x=>[x.batch_id,x]));
+      const lines=[];
+      for(const [id,x] of nb){const o=cb.get(id);
+        if(!o)lines.push(`<div class="batch add">+ ${esc(id)}: ${fmt(x.qty)}, exp ${esc(x.expiry_date)}</div>`);
+        else if(+o.qty!==+x.qty||o.expiry_date!==x.expiry_date)lines.push(`<div class="batch">~ ${esc(id)}: ${fmt(o.qty)} → ${fmt(x.qty)}${o.expiry_date!==x.expiry_date?`, exp ${esc(o.expiry_date)} → ${esc(x.expiry_date)}`:''}</div>`)}
+      for(const [id,o] of cb)if(!nb.has(id))lines.push(`<div class="batch del">− ${esc(id)}: ${fmt(o.qty)}</div>`);
+      return `<tr><td>${esc(it.medicine)}${cur?'':' <span class="chip new"><i></i>New line</span>'}</td>
+        <td class="n">${cur?fmt(a):'—'}</td>
+        <td class="n"><b>${fmt(b)}</b>${bigJump(a,b)?'<span class="big">check</span>':''}${delta(cur?a:null,b)}</td>
+        <td class="n">${cur?fmt(cur.daily_usage):'—'}</td>
+        <td class="n"><b>${fmt(it.daily_usage)}</b>${cur&&bigJump(+cur.daily_usage,+it.daily_usage)?'<span class="big">check</span>':''}${delta(cur?+cur.daily_usage:null,+it.daily_usage)}</td>
+        <td>${lines.join('')||'<small>no batch changes</small>'}</td></tr>`}).join('')
+  }</tbody></table></div>`;
+}
+
+async function load(){
+  let res;
+  try{res=await api('/api/admin/stock-submissions')}catch(_){$('pending').innerHTML='<div class="panel empty">Server offline. Start app.py.</div>';return false}
+  if(res.status===401){showLogin(KEY?'That key is not right.':'');return false}
+  const rows=await res.json();
+  $('login').hidden=true;$('main').hidden=false;$('logout').hidden=false;
+  const sig=JSON.stringify(rows.map(r=>[r.id,r.status]));
+  if(sig===SIG)return true;          // nothing new: leave the page alone so a half-typed reason isn't wiped
+  SIG=sig;
+  const pend=rows.filter(r=>r.status==='pending').reverse();   // oldest first: first come, first reviewed
+  $('pendN').textContent=pend.length||'';
+  $('pending').innerHTML=pend.length?pend.map(s=>`<div class="panel" data-id="${esc(s.id)}">
+      <div class="sub-head"><div class="t">${esc(s.facility)} <span class="mono" style="font-weight:400;color:var(--ink3)">${esc(s.id)}</span>
+        <small>Submitted by ${esc(s.submitted_by)} on ${esc(s.submitted_at.replace('T',' '))} · ${s.items.length} medicine${s.items.length>1?'s':''}</small></div>
+        <span class="chip wait"><i></i>Waiting for approval</span></div>
+      ${s.note?`<p class="quote">“${esc(s.note)}”</p>`:''}
+      ${diffTable(s)}
+      <div class="actions"><textarea placeholder="Note to the hospital (required to reject)" aria-label="Review note" maxlength="500"></textarea>
+        <button class="btn danger" data-a="reject">Reject</button><button class="btn primary" data-a="approve">Approve and publish</button></div>
+      <div class="err" data-err></div></div>`).join(''):'<div class="panel empty">Nothing waiting. New hospital submissions appear here automatically.</div>';
+  const done=rows.filter(r=>r.status!=='pending');
+  $('hist').innerHTML=done.length?done.map(s=>`<tr><td class="mono">${esc(s.id)}<small>${esc(s.submitted_at.replace('T',' '))}</small></td><td>${esc(s.facility)}</td>
+     <td>${s.items.map(i=>esc(i.medicine)).join(', ')}</td><td>${esc(s.submitted_by)}</td>
+     <td>${s.status==='approved'?'<span class="chip ok"><i></i>Approved</span>':'<span class="chip crit"><i></i>Rejected</span>'}<small>${esc((s.reviewed_at||'').replace('T',' '))}</small></td>
+     <td>${esc(s.review_note)||'—'}</td></tr>`).join(''):'<tr><td colspan="6" class="empty">No decisions yet.</td></tr>';
+  return true;
+}
+
+$('pending').addEventListener('click',async e=>{
+  const a=e.target.dataset.a;if(!a)return;
+  const card=e.target.closest('[data-id]'),id=card.dataset.id,note=card.querySelector('textarea').value.trim(),errEl=card.querySelector('[data-err]');
+  errEl.textContent='';
+  if(a==='reject'&&!note){errEl.textContent='Write a reason so the hospital knows what to fix.';card.querySelector('textarea').focus();return}
+  if(a==='approve'&&!confirm(`Approve ${id}? The new stock goes live on the network straight away.`))return;
+  card.querySelectorAll('button').forEach(b=>b.disabled=true);
+  try{
+    const res=await api(`/api/admin/stock-submissions/${encodeURIComponent(id)}/${a}`,{method:'POST',body:JSON.stringify({note})});
+    const d=await res.json();
+    if(res.status===401){showLogin('Your key was not accepted.');return}
+    if(!res.ok){errEl.textContent=d.error||('Server said '+res.status)}
+    if(res.ok&&a==='approve'){try{new BroadcastChannel('medisync').postMessage({type:'stock_approved',id})}catch(_){}}
+  }catch(_){errEl.textContent='Could not reach the server.'}
+  SIG='';await load();
+});
+
+if(KEY)load();else showLogin();
+setInterval(()=>{if(KEY&&!$('main').hidden)load()},5000);
+})();
+</script>
+</body>
+</html>

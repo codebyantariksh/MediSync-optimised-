@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediSync | Medicine supply matching across your hospital network</title>
+<meta name="description" content="MediSync predicts demand surges at each facility and matches shortages with surplus stock elsewhere in the network.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#F3F6F7; --surface:#FFFFFF; --surface2:#EAEFF1; --line:#D8DFE3;
+  --ink:#12222A; --ink2:#47585F; --ink3:#72838B;
+  --accent:#0A6C74; --accent-hover:#085A61; --accent-ink:#FFFFFF; --accent-soft:#DAEEEF;
+  --crit:#B8322A; --crit-soft:#FAE4E1; --good:#256B43; --good-soft:#DFF0E6;
+  --sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --shadow:0 1px 2px rgba(18,34,42,.06),0 12px 32px rgba(18,34,42,.08);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0D191E; --surface:#14242B; --surface2:#1B2F38; --line:#2A424C;
+    --ink:#E6EEF1; --ink2:#A7BAC2; --ink3:#8AA0A9;
+    --accent:#4FC1C8; --accent-hover:#6FD0D6; --accent-ink:#06262A; --accent-soft:#143A3F;
+    --crit:#F28074; --crit-soft:#3B201D; --good:#6FCB95; --good-soft:#163325;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 32px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* Header */
+.site-header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:24px;height:68px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;letter-spacing:-.01em}
+.brand svg{color:var(--accent)}
+.nav-links{display:flex;gap:28px;font-size:15px;color:var(--ink2)}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{display:flex;gap:10px}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-weight:600;font-size:15px;padding:10px 18px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.btn:hover{border-color:var(--ink3)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn.lg{padding:14px 24px;font-size:16px}
+.textlink{font-weight:600;color:var(--accent);border-bottom:1px solid transparent}
+.textlink:hover{border-bottom-color:var(--accent)}
+
+/* Hero */
+.hero{padding:72px 0 80px}
+.hero-grid{display:grid;grid-template-columns:1.02fr 1fr;gap:56px;align-items:center}
+h1{font-size:clamp(34px,4.6vw,54px);line-height:1.08;letter-spacing:-.025em;font-weight:600;max-width:15em}
+.lede{margin-top:22px;font-size:19px;line-height:1.6;color:var(--ink2);max-width:34em}
+.hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 16px;margin-top:34px}
+.hero-note{margin-top:30px;padding-top:22px;border-top:1px solid var(--line);font-size:14px;color:var(--ink3);max-width:36em}
+
+/* Network panel */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}
+.panel-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);font-size:14px;font-weight:600}
+.panel-top span{font-weight:400;color:var(--ink3);font-size:13px}
+.map{display:block;width:100%;height:auto;background:var(--surface)}
+.map .grid-dot{fill:var(--line)}
+.map .link{stroke:var(--line);stroke-width:1.5}
+.map .flow{stroke:var(--accent);stroke-width:2.5;fill:none;stroke-dasharray:7 7;animation:flow 1.1s linear infinite}
+.map .arrow{fill:var(--accent)}
+.map .node-ring{fill:var(--surface);stroke-width:3}
+.map .n-good{stroke:var(--good)}
+.map .n-crit{stroke:var(--crit)}
+.map .n-dot-good{fill:var(--good)}
+.map .n-dot-crit{fill:var(--crit)}
+.map .pulse{fill:none;stroke:var(--crit);stroke-width:2;transform-box:fill-box;transform-origin:center;animation:pulse 2.2s ease-out infinite}
+.map .name{font:600 13px var(--sans);fill:var(--ink)}
+.map .role{font:500 11.5px var(--sans)}
+.map .role.good{fill:var(--good)}
+.map .role.crit{fill:var(--crit)}
+.map .elabel{font:500 12px var(--sans);fill:var(--accent)}
+@keyframes flow{to{stroke-dashoffset:-14}}
+@keyframes pulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.4);opacity:0}}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;padding:12px 18px;border-top:1px solid var(--line);font-size:13px;color:var(--ink2)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:baseline}
+.legend .l-line{width:18px;height:0;border-radius:0;border-top:2.5px dashed var(--accent);background:none;vertical-align:middle}
+.caption{padding:0 18px 16px;font-size:13px;color:var(--ink3)}
+
+/* Sections */
+section{padding:84px 0}
+.section-head{max-width:46em;margin-bottom:44px}
+h2{font-size:clamp(28px,3.2vw,38px);line-height:1.15;letter-spacing:-.02em;font-weight:600}
+.section-head p{margin-top:14px;font-size:18px;color:var(--ink2)}
+.band{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+
+/* Portals */
+.portals{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.portal{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:28px;transition:border-color .15s,box-shadow .15s}
+.portal:hover{border-color:var(--accent);box-shadow:var(--shadow)}
+.portal .icon{width:44px;height:44px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin-bottom:20px}
+.portal .icon svg{width:22px;height:22px}
+.portal .for{font-size:14px;color:var(--ink3);margin-bottom:4px}
+.portal h3{font-size:22px;font-weight:600;letter-spacing:-.01em}
+.portal p{margin-top:10px;color:var(--ink2);font-size:15.5px}
+.portal ul{margin:18px 0 26px;padding-top:16px;border-top:1px solid var(--line);list-style:none;display:grid;gap:9px;font-size:15px;color:var(--ink2)}
+.portal li{position:relative;padding-left:22px}
+.portal li::before{content:"";position:absolute;left:2px;top:.55em;width:8px;height:5px;border-left:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg)}
+.portal .btn{margin-top:auto}
+
+/* Steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;list-style:none;counter-reset:s}
+.steps li{position:relative;padding:0 28px 0 0}
+.steps li::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-weight:600;font-size:15px;position:relative;z-index:1}
+.steps li::after{content:"";position:absolute;top:17px;left:42px;right:8px;height:2px;background:var(--line)}
+.steps li:last-child::after{display:none}
+.steps h3{margin-top:18px;font-size:18px;font-weight:600}
+.steps p{margin-top:8px;font-size:15.5px;color:var(--ink2)}
+
+/* Capabilities */
+.caps{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.cap{padding:30px 32px;border-bottom:1px solid var(--line)}
+.cap:nth-child(odd){border-right:1px solid var(--line)}
+.cap:nth-last-child(-n+2){border-bottom:0}
+.cap h3{font-size:19px;font-weight:600}
+.cap p{margin-top:8px;color:var(--ink2);font-size:15.5px;max-width:34em}
+.cap .links{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px 22px;font-size:15px}
+
+/* Closing call */
+.closing{background:var(--accent);color:var(--accent-ink);border-radius:12px;padding:44px 48px;display:flex;flex-wrap:wrap;gap:24px 40px;align-items:center;justify-content:space-between}
+.closing h2{font-size:clamp(24px,2.6vw,32px);max-width:20em}
+.closing p{margin-top:8px;opacity:.88;max-width:34em}
+.closing .actions{display:flex;flex-wrap:wrap;gap:12px}
+.closing .btn{border-color:var(--accent-ink);background:var(--accent-ink);color:var(--accent)}
+.closing .btn.ghost{background:transparent;color:var(--accent-ink);border-color:color-mix(in srgb,var(--accent-ink) 55%,transparent)}
+.closing .btn.ghost:hover{border-color:var(--accent-ink)}
+
+/* Footer */
+footer{border-top:1px solid var(--line);padding:48px 0 40px;font-size:15px;color:var(--ink2)}
+.foot{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px}
+.foot .brand{font-size:18px;color:var(--ink)}
+.foot p{margin-top:12px;max-width:26em;font-size:14.5px}
+.foot h4{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:12px}
+.foot ul{list-style:none;display:grid;gap:8px}
+.foot a:hover{color:var(--accent)}
+.legal{margin-top:36px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px;color:var(--ink3)}
+
+@media (max-width:980px){
+  .hero{padding:48px 0 56px}
+  .hero-grid{grid-template-columns:1fr;gap:40px}
+  .portals{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr;gap:36px 24px}
+  .steps li::after{display:none}
+  .caps{grid-template-columns:1fr}
+  .cap:nth-child(odd){border-right:0}
+  .cap:nth-last-child(-n+2){border-bottom:1px solid var(--line)}
+  .cap:last-child{border-bottom:0}
+  .foot{grid-template-columns:1fr 1fr}
+  .foot > div:first-child{grid-column:1 / -1}
+  section{padding:60px 0}
+}
+@media (max-width:720px){
+  .nav-links{display:none}
+  .nav-cta .btn.hide-sm{display:none}
+  .closing{padding:32px 24px}
+}
+@media (max-width:520px){
+  .steps{grid-template-columns:1fr}
+  .wrap{padding:0 18px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .map .flow,.map .pulse{animation:none}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="landing_page.html" class="brand" aria-label="MediSync home">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      MediSync
+    </a>
+    <nav class="nav-links" aria-label="Page sections">
+      <a href="#portals">Portals</a>
+      <a href="#how">How it works</a>
+      <a href="#capabilities">Capabilities</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="donor_portal.html" class="btn hide-sm">Donor portal</a>
+      <a href="clinic_portal.html" class="btn primary">Clinic portal</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Medicine supply, matched across your hospital network</h1>
+        <p class="lede">MediSync predicts demand surges at each facility and matches shortages with surplus stock elsewhere in the network, so clinics are resupplied before they run out.</p>
+        <div class="hero-actions">
+          <a href="clinic_portal.html" class="btn primary lg">Open clinic portal</a>
+          <a href="donor_portal.html" class="btn lg">Open donor portal</a>
+          <a href="MediSync.html" class="textlink">Go to network dashboard</a>
+        </div>
+        <p class="hero-note">Connects Vellore Central Referral, Katpadi Community Clinic, Arcot Maternity Centre and Ranipet District Hospital.</p>
+      </div>
+
+      <div class="panel" role="img" aria-label="Network map: Vellore Central sends Amoxicillin to Katpadi Clinic, and Ranipet District sends Oxytocin to Arcot Maternity.">
+        <div class="panel-top">Network matching <span>Example</span></div>
+        <svg class="map" viewBox="60 52 412 236" aria-hidden="true">
+          <defs>
+            <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse"><circle class="grid-dot" cx="2" cy="2" r="1.2"/></pattern>
+            <marker id="head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow" d="M0 0 L10 5 L0 10 z"/></marker>
+          </defs>
+          <rect x="0" y="0" width="520" height="340" fill="url(#dots)"/>
+
+          <!-- network links -->
+          <line class="link" x1="165" y1="187" x2="308" y2="221"/>
+          <line class="link" x1="165" y1="187" x2="374" y2="119"/>
+          <line class="link" x1="127" y1="105" x2="374" y2="119"/>
+
+          <!-- transfers -->
+          <path class="flow" d="M159.5 175.2 L133.3 118.6" marker-end="url(#head)"/>
+          <path class="flow" d="M366.9 129.9 L316.1 208.4" marker-end="url(#head)"/>
+          <text class="elabel" x="158" y="140">Amoxicillin</text>
+          <text class="elabel" x="350" y="176">Oxytocin</text>
+
+          <!-- Katpadi (shortage) -->
+          <circle class="pulse" cx="127" cy="105" r="10"/>
+          <circle class="node-ring n-crit" cx="127" cy="105" r="11"/><circle class="n-dot-crit" cx="127" cy="105" r="4.5"/>
+          <text class="name" x="127" y="71" text-anchor="middle">Katpadi Clinic</text>
+          <text class="role crit" x="127" y="86" text-anchor="middle">Shortage</text>
+
+          <!-- Vellore (surplus) -->
+          <circle class="node-ring n-good" cx="165" cy="187" r="11"/><circle class="n-dot-good" cx="165" cy="187" r="4.5"/>
+          <text class="name" x="165" y="222" text-anchor="middle">Vellore Central</text>
+          <text class="role good" x="165" y="238" text-anchor="middle">Surplus</text>
+
+          <!-- Ranipet (surplus) -->
+          <circle class="node-ring n-good" cx="374" cy="119" r="11"/><circle class="n-dot-good" cx="374" cy="119" r="4.5"/>
+          <text class="name" x="374" y="94" text-anchor="middle">Ranipet District</text>
+          <text class="role good" x="391" y="123">Surplus</text>
+
+          <!-- Arcot (shortage) -->
+          <circle class="pulse" cx="308" cy="221" r="10"/>
+          <circle class="node-ring n-crit" cx="308" cy="221" r="11"/><circle class="n-dot-crit" cx="308" cy="221" r="4.5"/>
+          <text class="name" x="308" y="256" text-anchor="middle">Arcot Maternity</text>
+          <text class="role crit" x="308" y="272" text-anchor="middle">Shortage</text>
+        </svg>
+        <div class="legend">
+          <span><i style="background:var(--crit)"></i>Running low</span>
+          <span><i style="background:var(--good)"></i>Has surplus</span>
+          <span><i class="l-line"></i>Proposed transfer</span>
+        </div>
+        <p class="caption">Illustration of the matching the engine proposes from facility stock levels.</p>
+      </div>
+    </div>
+  </div>
+
+  <section id="portals" class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Choose where to start</h2>
+        <p>Each role has its own page. Clinics ask for stock, donors approve releases, and the operations team oversees the whole network.</p>
+      </div>
+      <div class="portals">
+        <div class="portal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/><path d="M12 8v4M10 10h4"/></svg></div>
+          <div class="for">For clinic and hospital pharmacists</div>
+          <h3>Clinic portal</h3>
+          <p>See your own stock, spot surge warnings early and ask the network for help.</p>
+          <ul>
+            <li>View stock and days of cover</li>
+            <li>Read AI surge risk for your medicines</li>
+            <li>Request an emergency restock</li>
+          </ul>
+          <a href="clinic_portal.html" class="btn primary">Open clinic portal</a>
+        </div>
+
+        <div class="portal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg></div>
+          <div class="for">For facilities with surplus stock</div>
+          <h3>Donor portal</h3>
+          <p>Review requests that the engine has matched to your surplus, then approve the release.</p>
+          <ul>
+            <li>See which clinics need your stock</li>
+            <li>Check quantity, urgency and value</li>
+            <li>Authorize the release in one click</li>
+          </ul>
+          <a href="donor_portal.html" class="btn primary">Open donor portal</a>
+        </div>
+
+        <div class="portal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></div>
+          <div class="for">For the MediSync operations team</div>
+          <h3>Network dashboard</h3>
+          <p>Watch every facility in one place and run smart matching across the network.</p>
+          <ul>
+            <li>Track shortages, surplus and expiry risk</li>
+            <li>Compare urgency-first and fair-share matching</li>
+            <li>Follow transfers from approval to arrival</li>
+          </ul>
+          <a href="MediSync.html" class="btn primary">Open network dashboard</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>How a shortage gets resolved</h2>
+        <p>From a rising demand curve to stock on the shelf, in four steps.</p>
+      </div>
+      <ol class="steps">
+        <li>
+          <h3>Read consumption</h3>
+          <p>Each facility's recent 14 days of use are read from its stock data.</p>
+        </li>
+        <li>
+          <h3>Flag surges</h3>
+          <p>A Support Vector Machine compares each curve with normal and outbreak patterns and shows a risk percentage.</p>
+        </li>
+        <li>
+          <h3>Match supply</h3>
+          <p>Medicines with less than five days of cover are matched to facilities holding more than they need, taking batches that expire first.</p>
+        </li>
+        <li>
+          <h3>Donor approves</h3>
+          <p>The donor reviews the request and authorizes the release. The transfer then appears on the dashboard.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="capabilities" class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Built for safe, fair distribution</h2>
+        <p>Rules that protect donors, prioritise life-saving medicines and keep every stock change accountable.</p>
+      </div>
+      <div class="caps">
+        <div class="cap">
+          <h3>Surge prediction</h3>
+          <p>An RBF-kernel SVM scores every facility and medicine, so rising demand is visible before stock runs out.</p>
+        </div>
+        <div class="cap">
+          <h3>Two ways to allocate</h3>
+          <p>Choose urgency first or fair share. Each mode reports how many critical needs it meets and a fairness score (Jain's index).</p>
+        </div>
+        <div class="cap">
+          <h3>Expiry-aware dispatch</h3>
+          <p>Transfers take from the batches that expire first, and stock likely to expire unused is flagged. Donors always keep their own reserve.</p>
+        </div>
+        <div class="cap">
+          <h3>Reviewed stock updates</h3>
+          <p>Facilities submit stock changes, and the MediSync team approves them before they go live on the network.</p>
+          <div class="links">
+            <a class="textlink" href="stock_update.html">Submit a stock update</a>
+            <a class="textlink" href="stock_review.html">Review stock updates</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="closing">
+        <div>
+          <h2>Ready to see the network in action?</h2>
+          <p>Open the dashboard to watch live matching, or go straight to your portal.</p>
+        </div>
+        <div class="actions">
+          <a href="MediSync.html" class="btn">Open network dashboard</a>
+          <a href="clinic_portal.html" class="btn ghost">Clinic portal</a>
+          <a href="donor_portal.html" class="btn ghost">Donor portal</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a href="landing_page.html" class="brand">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          MediSync
+        </a>
+        <p>Predicting demand surges and routing medicines between hospitals and clinics.</p>
+      </div>
+      <div>
+        <h4>Portals</h4>
+        <ul>
+          <li><a href="clinic_portal.html">Clinic portal</a></li>
+          <li><a href="donor_portal.html">Donor portal</a></li>
+          <li><a href="MediSync.html">Network dashboard</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Stock management</h4>
+        <ul>
+          <li><a href="stock_update.html">Stock update form</a></li>
+          <li><a href="stock_review.html">Stock approvals</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="legal">&copy; 2026 MediSync. AI-powered healthcare logistics.</p>
+  </div>
+</footer>
+
+</body>
+</html>

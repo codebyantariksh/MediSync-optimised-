@@ -1,0 +1,1113 @@
+{
+  "meta": {
+    "generated_at": "2026-10-18T11:42:54.405315",
+    "reserve_days": 5,
+    "target_days": 10,
+    "keep_days": 12
+  },
+  "DRUGS": [
+    {
+      "id": "sal",
+      "name": "Normal saline 500 ml",
+      "unit": "bags",
+      "cls": "Essential",
+      "cold": false,
+      "base": 40.0,
+      "price": 35.0
+    },
+    {
+      "id": "amox",
+      "name": "Amoxicillin 500 mg",
+      "unit": "caps",
+      "cls": "Essential",
+      "cold": false,
+      "base": 120.0,
+      "price": 12.5
+    },
+    {
+      "id": "para",
+      "name": "Paracetamol 500 mg",
+      "unit": "tabs",
+      "cls": "Essential",
+      "cold": false,
+      "base": 200.0,
+      "price": 2.5
+    },
+    {
+      "id": "insu",
+      "name": "Insulin glargine",
+      "unit": "vials",
+      "cls": "Life-saving",
+      "cold": true,
+      "base": 6.0,
+      "price": 350.0
+    },
+    {
+      "id": "ceft",
+      "name": "Ceftriaxone 1 g",
+      "unit": "vials",
+      "cls": "Life-saving",
+      "cold": false,
+      "base": 25.0,
+      "price": 85.0
+    },
+    {
+      "id": "ors",
+      "name": "ORS sachets",
+      "unit": "sachets",
+      "cls": "Essential",
+      "cold": false,
+      "base": 60.0,
+      "price": 4.0
+    },
+    {
+      "id": "oxy",
+      "name": "Oxytocin 10 IU",
+      "unit": "amps",
+      "cls": "Life-saving",
+      "cold": true,
+      "base": 8.0,
+      "price": 45.0
+    },
+    {
+      "id": "arte",
+      "name": "Artesunate inj.",
+      "unit": "vials",
+      "cls": "Life-saving",
+      "cold": false,
+      "base": 4.0,
+      "price": 210.0
+    },
+    {
+      "id": "salb",
+      "name": "Salbutamol inhaler",
+      "unit": "inhalers",
+      "cls": "Essential",
+      "cold": false,
+      "base": 5.0,
+      "price": 120.0
+    },
+    {
+      "id": "met",
+      "name": "Metformin 500 mg",
+      "unit": "tabs",
+      "cls": "Chronic",
+      "cold": false,
+      "base": 150.0,
+      "price": 3.0
+    }
+  ],
+  "FACS": [
+    {
+      "id": "F1",
+      "name": "Vellore Central Referral",
+      "short": "Vellore Central",
+      "type": "Referral hospital",
+      "beds": 450,
+      "x": 0.5,
+      "y": 0.5
+    },
+    {
+      "id": "F2",
+      "name": "Katpadi Community Clinic",
+      "short": "Katpadi Clinic",
+      "type": "Community clinic",
+      "beds": 45,
+      "x": 0.46,
+      "y": 0.38
+    },
+    {
+      "id": "F3",
+      "name": "Arcot Maternity Centre",
+      "short": "Arcot Maternity",
+      "type": "Maternity centre",
+      "beds": 80,
+      "x": 0.65,
+      "y": 0.55
+    },
+    {
+      "id": "F4",
+      "name": "Ranipet District Hospital",
+      "short": "Ranipet District",
+      "type": "District hospital",
+      "beds": 220,
+      "x": 0.72,
+      "y": 0.4
+    }
+  ],
+  "pairs": [
+    {
+      "fac": "F1",
+      "drug": "sal",
+      "base": 150.0,
+      "use": 150.0,
+      "g": 0.0,
+      "hist": [
+        150.0,
+        150.0,
+        150.0,
+        150.0,
+        150.0,
+        150.0,
+        150.0,
+        150.0,
+        150.0,
+        150.0,
+        150.0,
+        150.0,
+        150.0,
+        150.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.1%",
+      "batches": [
+        {
+          "id": "B_VC_SAL_1",
+          "qty": 2400.0,
+          "exp": 347
+        },
+        {
+          "id": "B_VC_SAL_2",
+          "qty": 1200.0,
+          "exp": 514
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F1",
+      "drug": "amox",
+      "base": 120.0,
+      "use": 120.0,
+      "g": 0.0,
+      "hist": [
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.2%",
+      "batches": [
+        {
+          "id": "B_VC_AMX_1",
+          "qty": 1500.0,
+          "exp": 379
+        },
+        {
+          "id": "B_VC_AMX_2",
+          "qty": 900.0,
+          "exp": 485
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F1",
+      "drug": "para",
+      "base": 300.0,
+      "use": 300.0,
+      "g": 0.0,
+      "hist": [
+        300.0,
+        300.0,
+        300.0,
+        300.0,
+        300.0,
+        300.0,
+        300.0,
+        300.0,
+        300.0,
+        300.0,
+        300.0,
+        300.0,
+        300.0,
+        300.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.3%",
+      "batches": [
+        {
+          "id": "B_VC_PAR_1",
+          "qty": 2400.0,
+          "exp": 459
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F1",
+      "drug": "insu",
+      "base": 25.0,
+      "use": 25.0,
+      "g": 0.0,
+      "hist": [
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.3%",
+      "batches": [
+        {
+          "id": "B_VC_INS_EXP",
+          "qty": 1500.0,
+          "exp": 15
+        },
+        {
+          "id": "B_VC_INS_NEW",
+          "qty": 400.0,
+          "exp": 235
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F1",
+      "drug": "ceft",
+      "base": 40.0,
+      "use": 40.0,
+      "g": 0.0,
+      "hist": [
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.2%",
+      "batches": [
+        {
+          "id": "B_VC_CEF_1",
+          "qty": 900.0,
+          "exp": 413
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F1",
+      "drug": "ors",
+      "base": 60.0,
+      "use": 60.0,
+      "g": 0.0,
+      "hist": [
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.1%",
+      "batches": [
+        {
+          "id": "B_VC_ORS_1",
+          "qty": 700.0,
+          "exp": 306
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F1",
+      "drug": "oxy",
+      "base": 10.0,
+      "use": 10.0,
+      "g": 0.0,
+      "hist": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.3%",
+      "batches": [
+        {
+          "id": "B_VC_OXY_1",
+          "qty": 20.0,
+          "exp": 145
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F1",
+      "drug": "arte",
+      "base": 3.0,
+      "use": 3.0,
+      "g": 0.0,
+      "hist": [
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.2%",
+      "batches": [
+        {
+          "id": "B_VC_ART_1",
+          "qty": 60.0,
+          "exp": 348
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F2",
+      "drug": "amox",
+      "base": 40.0,
+      "use": 40.0,
+      "g": 0.06,
+      "hist": [
+        8.8,
+        11.2,
+        13.6,
+        16.0,
+        18.4,
+        20.8,
+        23.2,
+        25.6,
+        28.0,
+        30.4,
+        32.8,
+        35.2,
+        37.6,
+        40.0
+      ],
+      "ai_surge_risk": true,
+      "ai_confidence": "78.4%",
+      "batches": [
+        {
+          "id": "B_KC_AMX_1",
+          "qty": 60.0,
+          "exp": 206
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F2",
+      "drug": "para",
+      "base": 60.0,
+      "use": 60.0,
+      "g": 0.0,
+      "hist": [
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.0%",
+      "batches": [
+        {
+          "id": "B_KC_PAR_1",
+          "qty": 420.0,
+          "exp": 273
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F2",
+      "drug": "ors",
+      "base": 25.0,
+      "use": 25.0,
+      "g": 0.0,
+      "hist": [
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.1%",
+      "batches": [
+        {
+          "id": "B_KC_ORS_1",
+          "qty": 600.0,
+          "exp": 326
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F2",
+      "drug": "salb",
+      "base": 3.0,
+      "use": 3.0,
+      "g": 0.0,
+      "hist": [
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.2%",
+      "batches": [
+        {
+          "id": "B_KC_SLB_1",
+          "qty": 5.0,
+          "exp": 186
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F2",
+      "drug": "met",
+      "base": 20.0,
+      "use": 20.0,
+      "g": 0.0,
+      "hist": [
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.1%",
+      "batches": [
+        {
+          "id": "B_KC_MET_1",
+          "qty": 90.0,
+          "exp": 362
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F3",
+      "drug": "oxy",
+      "base": 12.0,
+      "use": 12.0,
+      "g": 0.05,
+      "hist": [
+        4.2,
+        4.8,
+        5.4,
+        6.0,
+        6.6,
+        7.2,
+        7.8,
+        8.4,
+        9.0,
+        9.6,
+        10.2,
+        10.8,
+        11.4,
+        12.0
+      ],
+      "ai_surge_risk": true,
+      "ai_confidence": "54.2%",
+      "batches": [
+        {
+          "id": "B_AM_OXY_1",
+          "qty": 18.0,
+          "exp": 89
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F3",
+      "drug": "para",
+      "base": 50.0,
+      "use": 50.0,
+      "g": 0.03,
+      "hist": [
+        30.5,
+        32.0,
+        33.5,
+        35.0,
+        36.5,
+        38.0,
+        39.5,
+        41.0,
+        42.5,
+        44.0,
+        45.5,
+        47.0,
+        48.5,
+        50.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "6.8%",
+      "batches": [
+        {
+          "id": "B_AM_PAR_1",
+          "qty": 120.0,
+          "exp": 18
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F3",
+      "drug": "sal",
+      "base": 35.0,
+      "use": 35.0,
+      "g": 0.0,
+      "hist": [
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.2%",
+      "batches": [
+        {
+          "id": "B_AM_SAL_1",
+          "qty": 600.0,
+          "exp": 541
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F3",
+      "drug": "insu",
+      "base": 8.0,
+      "use": 8.0,
+      "g": 0.0,
+      "hist": [
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.2%",
+      "batches": [
+        {
+          "id": "B_AM_INS_1",
+          "qty": 70.0,
+          "exp": 224
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F3",
+      "drug": "ors",
+      "base": 40.0,
+      "use": 40.0,
+      "g": 0.0,
+      "hist": [
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.1%",
+      "batches": [
+        {
+          "id": "B_AM_ORS_1",
+          "qty": 250.0,
+          "exp": 239
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F3",
+      "drug": "ceft",
+      "base": 10.0,
+      "use": 10.0,
+      "g": 0.0,
+      "hist": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.1%",
+      "batches": [
+        {
+          "id": "B_AM_CEF_1",
+          "qty": 12.0,
+          "exp": 335
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F3",
+      "drug": "salb",
+      "base": 4.0,
+      "use": 4.0,
+      "g": 0.0,
+      "hist": [
+        4.0,
+        4.0,
+        4.0,
+        4.0,
+        4.0,
+        4.0,
+        4.0,
+        4.0,
+        4.0,
+        4.0,
+        4.0,
+        4.0,
+        4.0,
+        4.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.2%",
+      "batches": [
+        {
+          "id": "B_AM_SLB_1",
+          "qty": 80.0,
+          "exp": 403
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F4",
+      "drug": "met",
+      "base": 180.0,
+      "use": 180.0,
+      "g": 0.0,
+      "hist": [
+        180.0,
+        180.0,
+        180.0,
+        180.0,
+        180.0,
+        180.0,
+        180.0,
+        180.0,
+        180.0,
+        180.0,
+        180.0,
+        180.0,
+        180.0,
+        180.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.2%",
+      "batches": [
+        {
+          "id": "B_RD_MET_1",
+          "qty": 3000.0,
+          "exp": 326
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F4",
+      "drug": "insu",
+      "base": 45.0,
+      "use": 45.0,
+      "g": 0.055,
+      "hist": [
+        12.8,
+        15.3,
+        17.8,
+        20.2,
+        22.7,
+        25.2,
+        27.7,
+        30.1,
+        32.6,
+        35.1,
+        37.6,
+        40.0,
+        42.5,
+        45.0
+      ],
+      "ai_surge_risk": true,
+      "ai_confidence": "77.7%",
+      "batches": [
+        {
+          "id": "B_RD_INS_1",
+          "qty": 150.0,
+          "exp": 133
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F4",
+      "drug": "oxy",
+      "base": 18.0,
+      "use": 18.0,
+      "g": 0.0,
+      "hist": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.2%",
+      "batches": [
+        {
+          "id": "B_RD_OXY_1",
+          "qty": 600.0,
+          "exp": 398
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F4",
+      "drug": "amox",
+      "base": 70.0,
+      "use": 70.0,
+      "g": 0.04,
+      "hist": [
+        33.6,
+        36.4,
+        39.2,
+        42.0,
+        44.8,
+        47.6,
+        50.4,
+        53.2,
+        56.0,
+        58.8,
+        61.6,
+        64.4,
+        67.2,
+        70.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "24.0%",
+      "batches": [
+        {
+          "id": "B_RD_AMX_1",
+          "qty": 500.0,
+          "exp": 289
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F4",
+      "drug": "para",
+      "base": 120.0,
+      "use": 120.0,
+      "g": 0.0,
+      "hist": [
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0,
+        120.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.0%",
+      "batches": [
+        {
+          "id": "B_RD_PAR_1",
+          "qty": 1500.0,
+          "exp": 420
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F4",
+      "drug": "sal",
+      "base": 80.0,
+      "use": 80.0,
+      "g": 0.0,
+      "hist": [
+        80.0,
+        80.0,
+        80.0,
+        80.0,
+        80.0,
+        80.0,
+        80.0,
+        80.0,
+        80.0,
+        80.0,
+        80.0,
+        80.0,
+        80.0,
+        80.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.1%",
+      "batches": [
+        {
+          "id": "B_RD_SAL_1",
+          "qty": 700.0,
+          "exp": 447
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F4",
+      "drug": "arte",
+      "base": 5.0,
+      "use": 5.0,
+      "g": 0.0,
+      "hist": [
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.1%",
+      "batches": [
+        {
+          "id": "B_RD_ART_1",
+          "qty": 7.0,
+          "exp": 262
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F2",
+      "drug": "arte",
+      "base": 5.0,
+      "use": 5.0,
+      "g": 0.0,
+      "hist": [
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.2%",
+      "batches": [
+        {
+          "id": "AMX-2026-11",
+          "qty": 1200.0,
+          "exp": 255
+        }
+      ],
+      "phase": 0
+    },
+    {
+      "fac": "F2",
+      "drug": "sal",
+      "base": 15.0,
+      "use": 15.0,
+      "g": 0.0,
+      "hist": [
+        15.0,
+        15.0,
+        15.0,
+        15.0,
+        15.0,
+        15.0,
+        15.0,
+        15.0,
+        15.0,
+        15.0,
+        15.0,
+        15.0,
+        15.0,
+        15.0
+      ],
+      "ai_surge_risk": false,
+      "ai_confidence": "1.1%",
+      "batches": [
+        {
+          "id": "B_KC_SAL_1",
+          "qty": 2030.0,
+          "exp": 316
+        }
+      ],
+      "phase": 0
+    }
+  ],
+  "distances": {}
+}

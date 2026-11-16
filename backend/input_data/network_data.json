@@ -1,0 +1,412 @@
+{
+  "hospitals": [
+    {
+      "id": "F1",
+      "name": "Vellore Central Referral",
+      "short": "Vellore Central",
+      "type": "Referral hospital",
+      "beds": 450,
+      "coordinates": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "inventory": [
+        {
+          "medicine": "Normal saline 500 ml",
+          "drug_id": "sal",
+          "daily_usage": 150.0,
+          "batches": [
+            {
+              "batch_id": "B_VC_SAL_1",
+              "qty": 2400,
+              "expiry_date": "2027-09-30"
+            },
+            {
+              "batch_id": "B_VC_SAL_2",
+              "qty": 1200,
+              "expiry_date": "2028-03-15"
+            }
+          ]
+        },
+        {
+          "medicine": "Amoxicillin 500 mg",
+          "drug_id": "amox",
+          "daily_usage": 120.0,
+          "batches": [
+            {
+              "batch_id": "B_VC_AMX_1",
+              "qty": 1500,
+              "expiry_date": "2027-11-01"
+            },
+            {
+              "batch_id": "B_VC_AMX_2",
+              "qty": 900,
+              "expiry_date": "2028-02-15"
+            }
+          ]
+        },
+        {
+          "medicine": "Paracetamol 500 mg",
+          "drug_id": "para",
+          "daily_usage": 300.0,
+          "batches": [
+            {
+              "batch_id": "B_VC_PAR_1",
+              "qty": 2400,
+              "expiry_date": "2028-01-20"
+            }
+          ]
+        },
+        {
+          "medicine": "Insulin glargine",
+          "drug_id": "insu",
+          "daily_usage": 25.0,
+          "batches": [
+            {
+              "batch_id": "B_VC_INS_EXP",
+              "qty": 1500,
+              "expiry_date": "2026-11-02"
+            },
+            {
+              "batch_id": "B_VC_INS_NEW",
+              "qty": 400,
+              "expiry_date": "2027-06-10"
+            }
+          ]
+        },
+        {
+          "medicine": "Ceftriaxone 1 g",
+          "drug_id": "ceft",
+          "daily_usage": 40.0,
+          "batches": [
+            {
+              "batch_id": "B_VC_CEF_1",
+              "qty": 900,
+              "expiry_date": "2027-12-05"
+            }
+          ]
+        },
+        {
+          "medicine": "ORS sachets",
+          "drug_id": "ors",
+          "daily_usage": 60.0,
+          "batches": [
+            {
+              "batch_id": "B_VC_ORS_1",
+              "qty": 700,
+              "expiry_date": "2027-08-20"
+            }
+          ]
+        },
+        {
+          "medicine": "Oxytocin 10 IU",
+          "drug_id": "oxy",
+          "daily_usage": 10.0,
+          "batches": [
+            {
+              "batch_id": "B_VC_OXY_1",
+              "qty": 20,
+              "expiry_date": "2027-03-12"
+            }
+          ]
+        },
+        {
+          "medicine": "Artesunate inj.",
+          "drug_id": "arte",
+          "daily_usage": 3.0,
+          "batches": [
+            {
+              "batch_id": "B_VC_ART_1",
+              "qty": 60,
+              "expiry_date": "2027-10-01"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F2",
+      "name": "Katpadi Community Clinic",
+      "short": "Katpadi Clinic",
+      "type": "Community clinic",
+      "beds": 45,
+      "coordinates": {
+        "x": 0.46,
+        "y": 0.38
+      },
+      "inventory": [
+        {
+          "medicine": "Amoxicillin 500 mg",
+          "drug_id": "amox",
+          "daily_usage": 40.0,
+          "growth_trend": 0.06,
+          "batches": [
+            {
+              "batch_id": "B_KC_AMX_1",
+              "qty": 60,
+              "expiry_date": "2027-05-12"
+            }
+          ]
+        },
+        {
+          "medicine": "Normal saline 500 ml",
+          "drug_id": "sal",
+          "daily_usage": 15.0,
+          "batches": [
+            {
+              "batch_id": "B_KC_SAL_1",
+              "qty": 40,
+              "expiry_date": "2027-08-30"
+            }
+          ]
+        },
+        {
+          "medicine": "Paracetamol 500 mg",
+          "drug_id": "para",
+          "daily_usage": 60.0,
+          "batches": [
+            {
+              "batch_id": "B_KC_PAR_1",
+              "qty": 420,
+              "expiry_date": "2027-07-18"
+            }
+          ]
+        },
+        {
+          "medicine": "ORS sachets",
+          "drug_id": "ors",
+          "daily_usage": 25.0,
+          "batches": [
+            {
+              "batch_id": "B_KC_ORS_1",
+              "qty": 600,
+              "expiry_date": "2027-09-09"
+            }
+          ]
+        },
+        {
+          "medicine": "Salbutamol inhaler",
+          "drug_id": "salb",
+          "daily_usage": 3.0,
+          "batches": [
+            {
+              "batch_id": "B_KC_SLB_1",
+              "qty": 5,
+              "expiry_date": "2027-04-22"
+            }
+          ]
+        },
+        {
+          "medicine": "Metformin 500 mg",
+          "drug_id": "met",
+          "daily_usage": 20.0,
+          "batches": [
+            {
+              "batch_id": "B_KC_MET_1",
+              "qty": 90,
+              "expiry_date": "2027-10-15"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F3",
+      "name": "Arcot Maternity Centre",
+      "short": "Arcot Maternity",
+      "type": "Maternity centre",
+      "beds": 80,
+      "coordinates": {
+        "x": 0.65,
+        "y": 0.55
+      },
+      "inventory": [
+        {
+          "medicine": "Oxytocin 10 IU",
+          "drug_id": "oxy",
+          "daily_usage": 12.0,
+          "growth_trend": 0.05,
+          "batches": [
+            {
+              "batch_id": "B_AM_OXY_1",
+              "qty": 18,
+              "expiry_date": "2027-01-15"
+            }
+          ]
+        },
+        {
+          "medicine": "Paracetamol 500 mg",
+          "drug_id": "para",
+          "daily_usage": 50.0,
+          "growth_trend": 0.03,
+          "batches": [
+            {
+              "batch_id": "B_AM_PAR_1",
+              "qty": 120,
+              "expiry_date": "2026-11-05"
+            }
+          ]
+        },
+        {
+          "medicine": "Normal saline 500 ml",
+          "drug_id": "sal",
+          "daily_usage": 35.0,
+          "batches": [
+            {
+              "batch_id": "B_AM_SAL_1",
+              "qty": 600,
+              "expiry_date": "2028-04-11"
+            }
+          ]
+        },
+        {
+          "medicine": "Insulin glargine",
+          "drug_id": "insu",
+          "daily_usage": 8.0,
+          "batches": [
+            {
+              "batch_id": "B_AM_INS_1",
+              "qty": 70,
+              "expiry_date": "2027-05-30"
+            }
+          ]
+        },
+        {
+          "medicine": "ORS sachets",
+          "drug_id": "ors",
+          "daily_usage": 40.0,
+          "batches": [
+            {
+              "batch_id": "B_AM_ORS_1",
+              "qty": 250,
+              "expiry_date": "2027-06-14"
+            }
+          ]
+        },
+        {
+          "medicine": "Ceftriaxone 1 g",
+          "drug_id": "ceft",
+          "daily_usage": 10.0,
+          "batches": [
+            {
+              "batch_id": "B_AM_CEF_1",
+              "qty": 12,
+              "expiry_date": "2027-09-18"
+            }
+          ]
+        },
+        {
+          "medicine": "Salbutamol inhaler",
+          "drug_id": "salb",
+          "daily_usage": 4.0,
+          "batches": [
+            {
+              "batch_id": "B_AM_SLB_1",
+              "qty": 80,
+              "expiry_date": "2027-11-25"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F4",
+      "name": "Ranipet District Hospital",
+      "short": "Ranipet District",
+      "type": "District hospital",
+      "beds": 220,
+      "coordinates": {
+        "x": 0.72,
+        "y": 0.4
+      },
+      "inventory": [
+        {
+          "medicine": "Metformin 500 mg",
+          "drug_id": "met",
+          "daily_usage": 180.0,
+          "batches": [
+            {
+              "batch_id": "B_RD_MET_1",
+              "qty": 3000,
+              "expiry_date": "2027-09-09"
+            }
+          ]
+        },
+        {
+          "medicine": "Insulin glargine",
+          "drug_id": "insu",
+          "daily_usage": 45.0,
+          "growth_trend": 0.055,
+          "batches": [
+            {
+              "batch_id": "B_RD_INS_1",
+              "qty": 150,
+              "expiry_date": "2027-02-28"
+            }
+          ]
+        },
+        {
+          "medicine": "Oxytocin 10 IU",
+          "drug_id": "oxy",
+          "daily_usage": 18.0,
+          "batches": [
+            {
+              "batch_id": "B_RD_OXY_1",
+              "qty": 600,
+              "expiry_date": "2027-11-20"
+            }
+          ]
+        },
+        {
+          "medicine": "Amoxicillin 500 mg",
+          "drug_id": "amox",
+          "daily_usage": 70.0,
+          "growth_trend": 0.04,
+          "batches": [
+            {
+              "batch_id": "B_RD_AMX_1",
+              "qty": 500,
+              "expiry_date": "2027-08-03"
+            }
+          ]
+        },
+        {
+          "medicine": "Paracetamol 500 mg",
+          "drug_id": "para",
+          "daily_usage": 120.0,
+          "batches": [
+            {
+              "batch_id": "B_RD_PAR_1",
+              "qty": 1500,
+              "expiry_date": "2027-12-12"
+            }
+          ]
+        },
+        {
+          "medicine": "Normal saline 500 ml",
+          "drug_id": "sal",
+          "daily_usage": 80.0,
+          "batches": [
+            {
+              "batch_id": "B_RD_SAL_1",
+              "qty": 700,
+              "expiry_date": "2028-01-08"
+            }
+          ]
+        },
+        {
+          "medicine": "Artesunate inj.",
+          "drug_id": "arte",
+          "daily_usage": 5.0,
+          "batches": [
+            {
+              "batch_id": "B_RD_ART_1",
+              "qty": 7,
+              "expiry_date": "2027-07-07"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
